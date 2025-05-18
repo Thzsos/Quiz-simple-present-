@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Present Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    .quiz-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      font-weight: bold;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .correct {
+      color: green;
+    }
+    .incorrect {
+      color: red;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-box">
+    <h2>Simple Present Quiz</h2>
+    <div id="quiz"></div>
+    <p id="score"></p>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "1. She ____ to school every day.",
+        options: ["go", "goes", "gone", "going"],
+        answer: "goes"
+      },
+      {
+        question: "2. They ____ like pizza.",
+        options: ["don’t", "doesn’t", "not", "no"],
+        answer: "don’t"
+      },
+      {
+        question: "3. Does he play football?",
+        options: ["True", "False"],
+        answer: "True"
+      },
+      {
+        question: "4. I am happy.",
+        options: ["True", "False"],
+        answer: "True"
+      },
+      {
+        question: "5. Reordene: always / she / tea / drinks",
+        options: [
+          "She drinks always tea.",
+          "Drinks she tea always.",
+          "She always drinks tea.",
+          "Always she tea drinks."
+        ],
+        answer: "She always drinks tea."
+      },
+      {
+        question: "6. He ____ not like fish.",
+        options: ["do", "does", "doesn’t", "don’t"],
+        answer: "doesn’t"
+      },
+      {
+        question: "7. We ____ English at school.",
+        options: ["learn", "learns", "learning", "learned"],
+        answer: "learn"
+      },
+      {
+        question: "8. Does she live here?",
+        options: ["True", "False"],
+        answer: "True"
+      },
+      {
+        question: "9. I ____ coffee in the morning.",
+        options: ["drink", "drinks", "drunk", "drinking"],
+        answer: "drink"
+      },
+      {
+        question: "10. Reordene: never / we / late / are",
+        options: [
+          "We are never late.",
+          "Are we never late.",
+          "Never late we are.",
+          "We never are late."
+        ],
+        answer: "We are never late."
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function showQuestion() {
+      const quiz = document.getElementById('quiz');
+      if (current < questions.length) {
+        const q = questions[current];
+        quiz.innerHTML = `<p class="question">${q.question}</p>` +
+          q.options.map(opt => `
+            <label><input type="radio" name="option" value="${opt}"> ${opt}</label><br>
+          `).join('') +
+          `<button onclick="checkAnswer()">Responder</button>
+          <div id="feedback" class="feedback"></div>`;
+      } else {
+        document.getElementById('quiz').innerHTML = "<h3>Quiz concluído!</h3>";
+        document.getElementById('score').innerText = `Você acertou ${score} de ${questions.length} perguntas.`;
+      }
+    }
+
+    function checkAnswer() {
+      const options = document.getElementsByName('option');
+      let selected = null;
+      for (let opt of options) {
+        if (opt.checked) selected = opt.value;
+      }
+      if (!selected) return;
+
+      const feedback = document.getElementById('feedback');
+      if (selected === questions[current].answer) {
+        feedback.innerText = "Resposta correta!";
+        feedback.className = "feedback correct";
+        score++;
+      } else {
+        feedback.innerText = `Resposta incorreta. A resposta certa é: ${questions[current].answer}`;
+        feedback.className = "feedback incorrect";
+      }
+      setTimeout(() => {
+        current++;
+        showQuestion();
+      }, 2000);
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
